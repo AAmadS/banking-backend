@@ -20,22 +20,22 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_number")
+    @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
     @ManyToOne 
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_type")
+    @Column(name = "account_type", nullable = false)
     private AccountType accountType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_status")
+    @Column(name = "account_status", nullable = false)
     private AccountStatus accountStatus;
 
-    @Column(name = "balance")
+    @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
     public Account (
@@ -81,7 +81,9 @@ public class Account {
             throw new IllegalArgumentException("Account Type cannot be null");
         }
 
-        this.accountNumber = accountNumber;
+        String normalizeAccountNumber = accountNumber.trim().replaceAll("\\s+", " ");
+
+        this.accountNumber = normalizeAccountNumber;
         this.customer = customer;
         this.accountType = accountType;
         this.accountStatus = AccountStatus.ACTIVE;
