@@ -116,5 +116,16 @@ public class Account {
     public BigDecimal getBalance(){
         return balance;
     }
+
+    public void updateStatus(AccountStatus newStatus){
+        if (newStatus == null){
+            throw new IllegalArgumentException("Account Status cannot be null");
+        }
+        if (newStatus == AccountStatus.CLOSED && balance.compareTo(BigDecimal.ZERO) != 0){
+            throw new IllegalStateException("Account Status cannot be CLOSE if balance is not ZERO");
+        }
+
+        this.accountStatus = newStatus;
+    }
     
 }

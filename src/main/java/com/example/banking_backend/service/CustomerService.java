@@ -18,7 +18,9 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
 
-    public CustomerService(CustomerRepository customerRepository, AccountRepository accountRepository) {
+    public CustomerService(
+            CustomerRepository customerRepository,
+            AccountRepository accountRepository) {
         this.customerRepository = customerRepository;
         this.accountRepository = accountRepository;
     }
@@ -73,11 +75,12 @@ public class CustomerService {
 
     }
 
-    public void deleteCustomer(Long id){
+    public void deleteCustomer(Long id) {
         Customer existingCustomer = findById(id);
 
-        if (accountRepository.existsByCustomerIdAndAccountStatusNot(id, AccountStatus.CLOSED)){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Customer cannot be deleted while an account is OPEN"); 
+        if (accountRepository.existsByCustomerIdAndAccountStatusNot(id, AccountStatus.CLOSED)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Customer cannot be deleted while an account is OPEN");
         }
 
         customerRepository.delete(existingCustomer);

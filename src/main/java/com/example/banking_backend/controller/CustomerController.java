@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.banking_backend.dto.CreateCustomerRequest;
 import com.example.banking_backend.dto.UpdateCustomerRequest;
+import com.example.banking_backend.model.Account;
 import com.example.banking_backend.model.Customer;
+import com.example.banking_backend.service.AccountService;
 import com.example.banking_backend.service.CustomerService;
 
 import java.util.List;
@@ -22,9 +24,11 @@ import java.util.List;
 @RequestMapping("/api/customers")
 public class CustomerController {
     private final CustomerService customerService;
+    private final AccountService accountService;
 
-    public CustomerController(CustomerService customerService){
+    public CustomerController(CustomerService customerService, AccountService accountService){
         this.customerService = customerService;
+        this.accountService = accountService;
     }
 
     @GetMapping
@@ -50,6 +54,11 @@ public class CustomerController {
     @DeleteMapping ("/{id}")
     public void deleteCustomer(@PathVariable Long id){
         customerService.deleteCustomer(id);
+    }
+
+    @GetMapping("/{id}/accounts")
+    public List<Account> getCustomerAccounts(@PathVariable Long id){
+        return accountService.findAccountsByCustomerId(id);
     }
     
 }
