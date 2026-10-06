@@ -22,7 +22,7 @@ public class Customer {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "phone", nullable = false, unique = true)
+    @Column(name = "phone_number", nullable = false, unique = true)
     private String phone;
 
     private void handleIllegalArgumentString(String value, String text) {
@@ -74,6 +74,14 @@ public class Customer {
 
     public String getPhoneNumber(){
         return phone;
+    }
+
+    public void updateContactInfo(String email, String phone) {
+        handleIllegalArgumentString(email, "Email cannot be null or empty");
+        handleIllegalArgumentString(phone, "Phone cannot be null or empty");
+
+        this.email = normalizeString(email);
+        this.phone = normalizeString(phone);
     }
 
 }
