@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.banking_backend.dto.CreateTransferRequest;
+import com.example.banking_backend.dto.TransferResponse;
 import com.example.banking_backend.model.Transfer;
 import com.example.banking_backend.service.TransferService;
 
@@ -20,7 +21,10 @@ public class TransferController {
     }
 
     @PostMapping
-    public Transfer createTransfer(@RequestBody CreateTransferRequest request){
-        return transferService.createTransfer(request);
+    public TransferResponse createTransfer(@RequestBody CreateTransferRequest request){
+
+        Transfer transfer = transferService.createTransfer(request);
+        
+        return new TransferResponse(transfer);
     }
 }

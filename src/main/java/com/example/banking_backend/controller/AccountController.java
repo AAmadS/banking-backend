@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.banking_backend.dto.AccountResponse;
+import com.example.banking_backend.dto.TransactionResponse;
 import com.example.banking_backend.dto.CreateAccountRequest;
 import com.example.banking_backend.dto.UpdateAccountStatusRequest;
 import com.example.banking_backend.model.Account;
@@ -33,18 +35,23 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account createAccount(@RequestBody CreateAccountRequest request) {
-        return accountService.createAccount(request);
+    public AccountResponse createAccount(@RequestBody CreateAccountRequest request){
+        Account account = accountService.createAccount(request);
+        return new AccountResponse(account);
     }
 
     @GetMapping("/{acctNo}")
-    public Account getAccount(@PathVariable String acctNo) {
-        return accountService.findByAccountNumber(acctNo);
+    public AccountResponse getAccount(@PathVariable String acctNo) {
+        Account account = accountService.findByAccountNumber(acctNo);
+
+        return new AccountResponse(account);
     }
 
     @PutMapping("/{acctNo}")
-    public Account updateAccount(@PathVariable String acctNo, @RequestBody UpdateAccountStatusRequest request) {
-        return accountService.updateAccountStatus(acctNo, request);
+    public AccountResponse updateAccount(@PathVariable String acctNo, @RequestBody UpdateAccountStatusRequest request) {
+        Account account = accountService.updateAccountStatus(acctNo, request);
+
+        return new AccountResponse(account);
     }
 
     @DeleteMapping("/{acctNo}")
@@ -53,7 +60,10 @@ public class AccountController {
     }
 
     @GetMapping("/{acctNo}/transactions")
-    public List<Transaction> getAccountTransactions(@PathVariable String acctNo) {
-        return transactionService.findByAccountNumber(acctNo);
+    public List<TransactionResponse> getAccountTransactions(@PathVariable String acctNo) {
+
+        List<Transaction> transactions = transactionService.findByAccountNumber(acctNo);
+
+        return transactions.stream().map(TransactionResponse::new).toList();
     }
 }

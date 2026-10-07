@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.banking_backend.dto.CustomerResponse;
+import com.example.banking_backend.dto.AccountResponse;
 import com.example.banking_backend.dto.CreateCustomerRequest;
 import com.example.banking_backend.dto.UpdateCustomerRequest;
 import com.example.banking_backend.model.Account;
@@ -32,23 +34,31 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> getAllCustomers(){
-        return customerService.findAll();
+    public List<CustomerResponse> getAllCustomers(){
+        List<Customer> customers = customerService.findAll();
+
+        return customers.stream().map(CustomerResponse::new).toList();
     }
 
     @GetMapping("/{id}")
-    public Customer getCustomer(@PathVariable Long id){
-        return customerService.findById(id);
+    public CustomerResponse getCustomer(@PathVariable Long id){
+        Customer customer = customerService.findById(id);
+
+        return new CustomerResponse(customer);
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody CreateCustomerRequest request){
-        return customerService.createCustomer(request);
+    public CustomerResponse createCustomer(@RequestBody CreateCustomerRequest request){
+        Customer customer = customerService.createCustomer(request);
+
+        return new CustomerResponse(customer);
     }
 
     @PutMapping("/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody UpdateCustomerRequest request){
-        return customerService.updateCustomer(id, request);
+    public CustomerResponse updateCustomer(@PathVariable Long id, @RequestBody UpdateCustomerRequest request){
+        Customer customer = customerService.updateCustomer(id, request);
+
+        return new CustomerResponse(customer);
     }
 
     @DeleteMapping ("/{id}")
@@ -57,8 +67,10 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/accounts")
-    public List<Account> getCustomerAccounts(@PathVariable Long id){
-        return accountService.findAccountsByCustomerId(id);
+    public List<AccountResponse> getCustomerAccounts(@PathVariable Long id){
+        List<Account> accounts = accountService.findAccountsByCustomerId(id);
+
+        return accounts.stream().map(AccountResponse::new).toList();
     }
     
 }

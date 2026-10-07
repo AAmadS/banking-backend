@@ -129,6 +129,9 @@ public class Account {
     }
 
     public void deposit(BigDecimal deposit){
+        if (accountStatus != AccountStatus.ACTIVE){
+            throw new IllegalStateException("Cannot deposit into an account that is not ACTIVE");
+        }
         if (deposit == null || deposit.compareTo(BigDecimal.ZERO) <= 0 ){
             throw new IllegalArgumentException("Deposit amount must be greater than ZERO");
         }
@@ -137,6 +140,9 @@ public class Account {
     }
 
     public void withdraw(BigDecimal withdraw){
+        if (accountStatus != AccountStatus.ACTIVE){
+            throw new IllegalStateException("Cannot withdraw into an account that is not ACTIVE");
+        }
         if( withdraw == null || withdraw.compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalArgumentException("Withdraw amount must be greater than ZERO");
         }
