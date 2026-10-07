@@ -127,5 +127,24 @@ public class Account {
 
         this.accountStatus = newStatus;
     }
+
+    public void deposit(BigDecimal deposit){
+        if (deposit == null || deposit.compareTo(BigDecimal.ZERO) <= 0 ){
+            throw new IllegalArgumentException("Deposit amount must be greater than ZERO");
+        }
+
+        balance = balance.add(deposit);
+    }
+
+    public void withdraw(BigDecimal withdraw){
+        if( withdraw == null || withdraw.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Withdraw amount must be greater than ZERO");
+        }
+        if (withdraw.compareTo(balance) > 0){
+            throw new IllegalArgumentException("Withdraw cannot be greater than balance");
+        }
+
+        balance = balance.subtract(withdraw);
+    }
     
 }
